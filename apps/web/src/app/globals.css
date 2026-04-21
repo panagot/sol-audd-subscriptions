@@ -1,0 +1,217 @@
+@import "tailwindcss";
+
+/* Australian palette: deep blue, white, red. Crisp civic / sporting kit, not startup teal */
+@theme inline {
+  --color-paper: #f0f5fb;
+  --color-paper-bright: #ffffff;
+  --color-fg: #071a33;
+  --color-ink: #071a33;
+  --color-muted: #5a6b80;
+  --color-line: #c5d3e3;
+  --color-blue: #0047ab;
+  --color-blue-hover: #003580;
+  --color-accent: #c8102e;
+  --color-accent-hover: #a30d25;
+  --font-sans: var(--font-ui-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-ui-serif), ui-serif, Georgia, "Times New Roman", serif;
+  --font-mono: var(--font-ui-mono), ui-monospace, monospace;
+}
+
+:root {
+  --fg: #071a33;
+  --muted: #5a6b80;
+  --paper: #f0f5fb;
+  --paper-bright: #ffffff;
+  --elevated: #ffffff;
+  --line: #c5d3e3;
+  --blue: #0047ab;
+  --blue-hover: #003580;
+  --accent: #c8102e;
+  --accent-hover: #a30d25;
+}
+
+body {
+  min-height: 100vh;
+  color: var(--fg);
+  background-color: var(--paper-bright);
+  background-image:
+    linear-gradient(180deg, #e8f0fc 0%, transparent 42%),
+    linear-gradient(
+      90deg,
+      rgba(0, 71, 171, 0.03) 0%,
+      transparent 35%,
+      rgba(200, 16, 46, 0.03) 100%
+    );
+}
+
+::selection {
+  background: rgba(0, 71, 171, 0.18);
+  color: var(--fg);
+}
+
+@utility text-fg {
+  color: var(--fg);
+}
+
+@utility text-muted {
+  color: var(--muted);
+}
+
+@utility text-accent {
+  color: var(--accent);
+}
+
+@utility text-blue {
+  color: var(--blue);
+}
+
+@utility bg-paper {
+  background-color: var(--paper);
+}
+
+@utility bg-elevated {
+  background-color: var(--elevated);
+}
+
+@utility border-line {
+  border-color: var(--line);
+}
+
+@utility font-display {
+  font-family: var(--font-ui-serif), ui-serif, Georgia, serif;
+}
+
+@utility font-mono-ui {
+  font-family: var(--font-ui-mono), ui-monospace, monospace;
+}
+
+.card-surface {
+  border: 1px solid var(--line);
+  background: var(--elevated);
+  box-shadow: 3px 3px 0 rgba(0, 55, 120, 0.08);
+}
+
+.input-field {
+  border-radius: 2px;
+  border: 1px solid var(--line);
+  background: var(--paper-bright);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--fg);
+  outline: none;
+  transition:
+    border-color 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.input-field:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 2px rgba(0, 71, 171, 0.2);
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  background: var(--blue);
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #ffffff;
+  transition: background 120ms ease;
+}
+
+.btn-primary:hover {
+  background: var(--blue-hover);
+}
+
+.btn-primary:disabled {
+  opacity: 0.55;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  border: 1px solid var(--blue);
+  background: transparent;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--blue);
+  transition:
+    background 120ms ease,
+    color 120ms ease,
+    border-color 120ms ease;
+}
+
+.btn-secondary:hover {
+  background: var(--blue);
+  color: #ffffff;
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.btn-ghost:hover {
+  color: var(--blue);
+}
+
+.code-inline {
+  border-radius: 2px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  padding: 0.1rem 0.35rem;
+  font-family: var(--font-ui-mono), ui-monospace, monospace;
+  font-size: 0.8em;
+  color: var(--fg);
+}
+
+.prose-site h2 {
+  margin-top: 2.5rem;
+  font-family: var(--font-ui-serif), ui-serif, Georgia, serif;
+  font-weight: 600;
+}
+
+.prose-site p,
+.prose-site ul,
+.prose-site ol {
+  margin-top: 0.75rem;
+}
+
+.prose-site strong {
+  font-weight: 600;
+  color: var(--fg);
+}
+
+.prose-site code {
+  font-family: var(--font-ui-mono), ui-monospace, monospace;
+}
+
+.wallet-adapter-button {
+  border-radius: 2px !important;
+  font-family: var(--font-ui-sans), system-ui, sans-serif !important;
+  font-weight: 600 !important;
+  background: var(--blue) !important;
+  color: #ffffff !important;
+}
+
+.wallet-adapter-button:hover {
+  background: var(--blue-hover) !important;
+}
+
+.wallet-adapter-modal-wrapper .wallet-adapter-modal {
+  border-radius: 2px !important;
+  font-family: var(--font-ui-sans), system-ui, sans-serif !important;
+}

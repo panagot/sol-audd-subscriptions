@@ -9,3 +9,6 @@ dist
 .DS_Store
 coverage
 .turbo
+
+# Local grant application draft (may contain personal details; do not commit)
+grant-application.md

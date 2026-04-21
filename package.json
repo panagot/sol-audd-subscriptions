@@ -13,6 +13,9 @@
   "engines": {
     "node": ">=20"
   },
+  "overrides": {
+    "tailwindcss": "3.4.19"
+  },
   "dependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

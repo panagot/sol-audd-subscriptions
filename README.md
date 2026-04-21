@@ -1,5 +1,7 @@
 # AUDD Subscriptions (SolAUDD)
 
+**Live demo:** [sol-audd-subscriptions-web.vercel.app](https://sol-audd-subscriptions-web.vercel.app/) · **Source:** [github.com/panagot/sol-audd-subscriptions](https://github.com/panagot/sol-audd-subscriptions)
+
 Open-source **AUDD** subscription checkout on **Solana**: a merchant dashboard to create plans, a **small embeddable widget** for the web, and documented patterns for **SPAs, mobile shells, and custom backends**.
 
 ## Features
@@ -74,10 +76,11 @@ See [`apps/web/.env.example`](apps/web/.env.example). Important:
 - `NEXT_PUBLIC_PLATFORM_TREASURY`: optional pubkey receiving fee bps from plans.
 - `DATABASE_URL`: SQLite file path for Prisma.
 
+## Grant / submission assets
+
+UI screenshots for applications or slide decks live in [`docs/grant-screenshots/`](docs/grant-screenshots/) (see that folder’s README to regenerate after you change the UI).
+
 ## License
 
 MIT. See [LICENSE](LICENSE).
 
-## Disclaimer
-
-This software is not financial or legal advice. Integrations with AUDD and Solana carry risk; test on devnet and review custody and compliance for your jurisdiction.

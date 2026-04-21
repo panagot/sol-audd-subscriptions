@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { getSiteOrigin, GITHUB_REPO_URL } from "@/lib/site-urls";
 
 export function SiteFooter() {
+  const siteOrigin = getSiteOrigin();
   return (
     <footer className="border-t-2 border-fg bg-paper-bright">
       <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-14 sm:flex-row sm:items-start sm:justify-between sm:px-6">
@@ -19,6 +21,22 @@ export function SiteFooter() {
           <span className="font-mono-ui text-[10px] uppercase tracking-[0.28em] text-muted">
             Links
           </span>
+          <a
+            className="text-fg underline decoration-neutral-400 underline-offset-4 hover:text-blue"
+            href={siteOrigin}
+            rel="noreferrer"
+            target="_blank"
+          >
+            Live demo
+          </a>
+          <a
+            className="text-fg underline decoration-neutral-400 underline-offset-4 hover:text-blue"
+            href={GITHUB_REPO_URL}
+            rel="noreferrer"
+            target="_blank"
+          >
+            GitHub repository
+          </a>
           <Link
             className="text-fg underline decoration-neutral-400 underline-offset-4 hover:text-blue"
             href="/integrations"

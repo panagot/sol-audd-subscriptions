@@ -61,9 +61,6 @@ export function SiteFooter() {
           </a>
         </div>
       </div>
-      <div className="border-t border-line py-4 text-center font-mono-ui text-[11px] text-muted">
-        Not financial or legal advice. Software provided as-is.
-      </div>
     </footer>
   );
 }

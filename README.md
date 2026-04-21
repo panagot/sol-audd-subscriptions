@@ -6,8 +6,8 @@ Open-source **AUDD** subscription checkout on **Solana**: a merchant dashboard t
 
 ## Features
 
-- Plans priced in **AUD** / month, settled in **AUDD** (SPL).
-- Optional **platform fee** (basis points) sent to `NEXT_PUBLIC_PLATFORM_TREASURY`.
+- Plans priced in **AUD** per month or year (merchant chooses), settled in **AUDD** (SPL).
+- Optional **platform fee** (basis points) sent to the pubkey in `PLATFORM_TREASURY`.
 - **Embeddable widget** (`public/widget.js`) that inserts a checkout iframe.
 - **Public HTTP APIs** (`GET /api/plans/[id]`, `POST /api/subscriptions/confirm`) for bespoke flows.
 - **SQLite + Prisma** for easy self-hosting.
@@ -73,7 +73,7 @@ See [`apps/web/.env.example`](apps/web/.env.example). Important:
 
 - `NEXT_PUBLIC_AUDD_MINT`: AUDD mint on Solana (mainnet default in example).
 - `NEXT_PUBLIC_SOLANA_RPC`: RPC endpoint (use a paid provider for production).
-- `NEXT_PUBLIC_PLATFORM_TREASURY`: optional pubkey receiving fee bps from plans.
+- `PLATFORM_TREASURY`: optional pubkey receiving fee bps from plans (server env; exposed to checkout via `/api/platform`).
 - `DATABASE_URL`: SQLite file path for Prisma.
 
 ## Grant / submission assets

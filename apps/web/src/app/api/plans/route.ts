@@ -1,8 +1,14 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { audToAtomic } from "@/lib/amount";
+import { createPlanSignMessage } from "@/lib/create-plan-signing";
 import { prisma } from "@/lib/prisma";
 import { verifyWalletMessage } from "@/lib/wallet-verify";
+
+const customFieldRow = z.object({
+  label: z.string().trim().min(1).max(80),
+  value: z.string().trim().min(1).max(500),
+});
 
 const createBody = z.object({
   publicKey: z.string(),
@@ -13,8 +19,9 @@ const createBody = z.object({
     merchantPubkey: z.string(),
     name: z.string().min(1).max(120),
     amountAud: z.string(),
-    interval: z.enum(["month"]),
+    interval: z.enum(["month", "year"]),
     feeBps: z.number().int().min(0).max(10_000),
+    customFields: z.array(customFieldRow).max(20).optional().default([]),
     ts: z.number(),
   }),
 });
@@ -36,7 +43,18 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Stale signature" }, { status: 400 });
   }
 
-  const message = `audd-subs:create:v1|${JSON.stringify(payload)}`;
+  const signPayload = {
+    v: 1,
+    action: "create_plan" as const,
+    merchantPubkey: payload.merchantPubkey,
+    name: payload.name,
+    amountAud: payload.amountAud,
+    interval: payload.interval,
+    feeBps: payload.feeBps,
+    customFields: payload.customFields ?? [],
+    ts: payload.ts,
+  };
+  const message = createPlanSignMessage(signPayload);
   const ok = verifyWalletMessage(publicKey, message, signature);
   if (!ok) {
     return NextResponse.json({ error: "Bad signature" }, { status: 401 });
@@ -53,17 +71,28 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Amount must be positive" }, { status: 400 });
   }
 
-  const plan = await prisma.plan.create({
-    data: {
-      merchantPubkey: payload.merchantPubkey,
-      name: payload.name,
-      amountAtomic: amountAtomic.toString(),
-      interval: payload.interval,
-      feeBps: payload.feeBps,
-    },
-  });
+  const customFields = payload.customFields ?? [];
 
-  return NextResponse.json({ plan });
+  try {
+    const plan = await prisma.plan.create({
+      data: {
+        merchantPubkey: payload.merchantPubkey,
+        name: payload.name,
+        amountAtomic: amountAtomic.toString(),
+        interval: payload.interval,
+        feeBps: payload.feeBps,
+        customFields,
+      },
+    });
+
+    return NextResponse.json({ plan });
+  } catch (e) {
+    console.error("plan create failed", e);
+    return NextResponse.json(
+      { error: "Could not save plan. Run database migrations (prisma migrate) and try again." },
+      { status: 500 },
+    );
+  }
 }
 
 export async function GET(req: Request) {

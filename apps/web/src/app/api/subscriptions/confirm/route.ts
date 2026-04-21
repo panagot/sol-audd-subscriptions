@@ -14,6 +14,10 @@ const bodySchema = z.object({
 
 function addInterval(from: Date, interval: string): Date {
   const d = new Date(from.getTime());
+  if (interval === "year") {
+    d.setFullYear(d.getFullYear() + 1);
+    return d;
+  }
   if (interval === "month") {
     d.setMonth(d.getMonth() + 1);
     return d;
@@ -42,7 +46,7 @@ export async function POST(req: Request) {
 
   if (fee > 0n && !treasury) {
     return NextResponse.json(
-      { error: "Server missing NEXT_PUBLIC_PLATFORM_TREASURY for fee plans" },
+      { error: "Server missing PLATFORM_TREASURY for fee plans" },
       { status: 500 },
     );
   }

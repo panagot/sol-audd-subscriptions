@@ -16,6 +16,8 @@ model Plan {
   interval         String         @default("month")
   /// Optional: basis points taken from payment to platform treasury (0–10000)
   feeBps           Int            @default(0)
+  /// Optional merchant-defined lines for checkout (JSON array of { label, value }), e.g. perks or terms
+  customFields     Json           @default("[]")
   createdAt        DateTime       @default(now())
   subscriptions    Subscription[]
 }

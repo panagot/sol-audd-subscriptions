@@ -8,7 +8,7 @@ import {
   getAssociatedTokenAddressSync,
 } from "@solana/spl-token";
 import { Connection, PublicKey, Transaction } from "@solana/web3.js";
-import { AUDD_DECIMALS, AUDD_MINT, getPlatformTreasury } from "@/lib/env";
+import { AUDD_DECIMALS, AUDD_MINT } from "@/lib/env";
 import { splitWithFee } from "@/lib/fees";
 
 export async function buildAudSubscriptionPaymentTx(opts: {
@@ -17,13 +17,15 @@ export async function buildAudSubscriptionPaymentTx(opts: {
   merchant: PublicKey;
   amountAtomic: bigint;
   feeBps: number;
+  /** From `GET /api/platform` on the client, or `getPlatformTreasury()` on the server. */
+  platformTreasury: PublicKey | null;
 }): Promise<Transaction> {
-  const treasury = getPlatformTreasury();
+  const treasury = opts.platformTreasury;
   const { merchant, fee } = splitWithFee(opts.amountAtomic, opts.feeBps);
 
   if (fee > 0n && !treasury) {
     throw new Error(
-      "This plan charges a platform fee but NEXT_PUBLIC_PLATFORM_TREASURY is not configured.",
+      "This plan charges a platform fee but PLATFORM_TREASURY is not configured on the server.",
     );
   }
 

@@ -215,7 +215,7 @@ export default function IntegrationsPage() {
         </li>
         <li>
           Use a reliable Solana RPC in production; optional{" "}
-          <code className="code-inline">NEXT_PUBLIC_PLATFORM_TREASURY</code> if you charge a platform
+          <code className="code-inline">PLATFORM_TREASURY</code> if you charge a platform
           fee.
         </li>
       </ol>

@@ -20,8 +20,15 @@ export function getAppUrl() {
   return url.replace(/\/$/, "");
 }
 
+/** Server-side only. For browser payment construction, use `GET /api/platform`. */
 export function getPlatformTreasury(): PublicKey | null {
-  const raw = process.env.NEXT_PUBLIC_PLATFORM_TREASURY;
+  const raw =
+    process.env.PLATFORM_TREASURY?.trim() ??
+    process.env.NEXT_PUBLIC_PLATFORM_TREASURY?.trim();
   if (!raw) return null;
-  return new PublicKey(raw);
+  try {
+    return new PublicKey(raw);
+  } catch {
+    return null;
+  }
 }

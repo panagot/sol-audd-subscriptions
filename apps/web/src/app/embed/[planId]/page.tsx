@@ -2,6 +2,8 @@
 
 import { atomicToAudString } from "@/lib/amount";
 import { buildAudSubscriptionPaymentTx } from "@/lib/payment";
+import { billingPeriodPhrase } from "@/lib/billing-interval";
+import { parsePlanCustomFields } from "@/lib/plan-custom-fields";
 import { PublicKey } from "@solana/web3.js";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
@@ -15,6 +17,7 @@ type Plan = {
   amountAtomic: string;
   interval: string;
   feeBps: number;
+  customFields: unknown;
 };
 
 export default function EmbedCheckoutPage() {
@@ -24,6 +27,7 @@ export default function EmbedCheckoutPage() {
   const { publicKey, sendTransaction, connected } = useWallet();
 
   const [plan, setPlan] = useState<Plan | null>(null);
+  const [platformTreasury, setPlatformTreasury] = useState<PublicKey | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [payError, setPayError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -33,10 +37,20 @@ export default function EmbedCheckoutPage() {
     let cancelled = false;
     (async () => {
       try {
-        const res = await fetch(`/api/plans/${planId}`);
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error ?? "Plan not found");
-        if (!cancelled) setPlan(data.plan);
+        const [planRes, platformRes] = await Promise.all([
+          fetch(`/api/plans/${planId}`),
+          fetch("/api/platform"),
+        ]);
+        const planData = await planRes.json();
+        if (!planRes.ok) throw new Error(planData.error ?? "Plan not found");
+        const platformData = (await platformRes.json()) as {
+          platformTreasury: string | null;
+        };
+        if (!cancelled) {
+          setPlan(planData.plan);
+          const raw = platformData.platformTreasury?.trim();
+          setPlatformTreasury(raw ? new PublicKey(raw) : null);
+        }
       } catch (e) {
         if (!cancelled) setLoadError(e instanceof Error ? e.message : "Failed to load");
       }
@@ -57,6 +71,7 @@ export default function EmbedCheckoutPage() {
         merchant: new PublicKey(plan.merchantPubkey),
         amountAtomic: BigInt(plan.amountAtomic),
         feeBps: plan.feeBps,
+        platformTreasury,
       });
       const sig = await sendTransaction(tx, connection);
       await connection.confirmTransaction(sig, "confirmed");
@@ -94,6 +109,7 @@ export default function EmbedCheckoutPage() {
   }
 
   const price = atomicToAudString(BigInt(plan.amountAtomic));
+  const checkoutExtras = parsePlanCustomFields(plan.customFields);
 
   return (
     <div className="flex min-h-[480px] flex-col gap-6 p-6 sm:p-8">
@@ -103,8 +119,18 @@ export default function EmbedCheckoutPage() {
         </p>
         <h1 className="font-display mt-2 text-xl font-semibold text-fg">{plan.name}</h1>
         <p className="mt-2 text-sm text-muted">
-          {price} AUD / {plan.interval} · settled on Solana
+          {price} AUD / {billingPeriodPhrase(plan.interval)} · settled on Solana
         </p>
+        {checkoutExtras.length > 0 && (
+          <dl className="mt-4 space-y-2 border-t border-line pt-4 text-sm">
+            {checkoutExtras.map((row, i) => (
+              <div className="flex flex-col gap-0.5 sm:flex-row sm:gap-3" key={`extra-${i}`}>
+                <dt className="font-medium text-fg sm:min-w-[7rem]">{row.label}</dt>
+                <dd className="text-muted">{row.value}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
@@ -113,7 +139,9 @@ export default function EmbedCheckoutPage() {
 
       {connected && publicKey && (
         <button className="btn-primary w-fit" disabled={busy} onClick={() => void pay()} type="button">
-          {busy ? "Confirm in wallet…" : `Pay ${price} AUDD`}
+          {busy
+            ? "Confirm in wallet…"
+            : `Pay ${price} AUDD / ${billingPeriodPhrase(plan.interval)}`}
         </button>
       )}
 

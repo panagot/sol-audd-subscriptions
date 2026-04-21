@@ -1,21 +1,6 @@
-@import "tailwindcss";
-
-/* Australian palette: deep blue, white, red. Crisp civic / sporting kit, not startup teal */
-@theme inline {
-  --color-paper: #f0f5fb;
-  --color-paper-bright: #ffffff;
-  --color-fg: #071a33;
-  --color-ink: #071a33;
-  --color-muted: #5a6b80;
-  --color-line: #c5d3e3;
-  --color-blue: #0047ab;
-  --color-blue-hover: #003580;
-  --color-accent: #c8102e;
-  --color-accent-hover: #a30d25;
-  --font-sans: var(--font-ui-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-ui-serif), ui-serif, Georgia, "Times New Roman", serif;
-  --font-mono: var(--font-ui-mono), ui-monospace, monospace;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --fg: #071a33;
@@ -47,42 +32,6 @@ body {
 ::selection {
   background: rgba(0, 71, 171, 0.18);
   color: var(--fg);
-}
-
-@utility text-fg {
-  color: var(--fg);
-}
-
-@utility text-muted {
-  color: var(--muted);
-}
-
-@utility text-accent {
-  color: var(--accent);
-}
-
-@utility text-blue {
-  color: var(--blue);
-}
-
-@utility bg-paper {
-  background-color: var(--paper);
-}
-
-@utility bg-elevated {
-  background-color: var(--elevated);
-}
-
-@utility border-line {
-  border-color: var(--line);
-}
-
-@utility font-display {
-  font-family: var(--font-ui-serif), ui-serif, Georgia, serif;
-}
-
-@utility font-mono-ui {
-  font-family: var(--font-ui-mono), ui-monospace, monospace;
 }
 
 .card-surface {

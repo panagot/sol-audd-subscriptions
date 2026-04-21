@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getSiteOrigin, GITHUB_REPO_URL } from "@/lib/site-urls";
+import { GITHUB_REPO_URL } from "@/lib/site-urls";
 
 const pillars = [
   {
@@ -38,8 +38,6 @@ const surfaces = [
 ];
 
 export default function Home() {
-  const siteOrigin = getSiteOrigin();
-
   return (
     <div className="space-y-24 sm:space-y-32">
       <section className="grid gap-12 border-b-2 border-fg pb-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,300px)] lg:items-end lg:gap-16">
@@ -96,40 +94,6 @@ export default function Home() {
         </aside>
       </section>
 
-      <section
-        aria-label="Project and submission links"
-        className="card-surface -mt-8 border-2 border-fg p-5 sm:p-6 lg:-mt-12"
-      >
-        <p className="font-mono-ui text-[10px] font-medium uppercase tracking-[0.28em] text-muted">
-          Links for reviewers
-        </p>
-        <p className="mt-2 text-sm leading-relaxed text-muted">
-          Live deployment, source, and integration docs in one place for grant packets or READMEs.
-        </p>
-        <ul className="mt-4 flex flex-col gap-3 text-sm font-semibold text-fg sm:flex-row sm:flex-wrap sm:gap-x-8 sm:gap-y-2">
-          <li>
-            <a className="text-blue underline decoration-blue/30 underline-offset-4 hover:text-blue-hover" href={siteOrigin}>
-              Live app ({siteOrigin.replace(/^https?:\/\//, "")})
-            </a>
-          </li>
-          <li>
-            <a
-              className="text-blue underline decoration-blue/30 underline-offset-4 hover:text-blue-hover"
-              href={GITHUB_REPO_URL}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              GitHub · sol-audd-subscriptions
-            </a>
-          </li>
-          <li>
-            <Link className="text-blue underline decoration-blue/30 underline-offset-4 hover:text-blue-hover" href="/integrations">
-              Integration guide (/integrations)
-            </Link>
-          </li>
-        </ul>
-      </section>
-
       <section>
         <div className="mb-10 max-w-2xl border-l-4 border-blue pl-5">
           <h2 className="font-display text-2xl font-semibold text-fg sm:text-3xl">Why this exists</h2>
@@ -179,30 +143,36 @@ export default function Home() {
       </section>
 
       <section className="border-2 border-blue/35 bg-paper-bright p-8 sm:p-10">
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-          <div className="space-y-2">
+        <div className="space-y-8">
+          <div className="max-w-2xl space-y-3">
             <p className="font-mono-ui text-[10px] font-medium uppercase tracking-[0.28em] text-muted">
-              Source
+              Open source
             </p>
-            <h2 className="font-display text-2xl font-semibold text-fg">Ship it under your name</h2>
-            <p className="max-w-xl text-sm leading-relaxed text-muted">
-              Next.js, Prisma, Solana wallet flow, widget bundle: all in the repo. No gradient
-              roadmap PDF required.
+            <h2 className="font-display text-2xl font-semibold leading-tight text-fg sm:text-3xl">
+              Ship it under your name
+            </h2>
+            <p className="text-sm leading-relaxed text-muted sm:text-base">
+              One MIT-licensed codebase: Next.js app, Prisma and SQLite, Solana wallet checkout, and a
+              small widget you can embed anywhere. Fork it, deploy it on your domain, and skip the
+              roadmap deck.
             </p>
           </div>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-col gap-3 border-t border-line pt-8 sm:flex-row sm:flex-nowrap sm:items-center sm:gap-3 sm:overflow-x-auto sm:pb-1">
             <a
-              className="btn-primary"
+              className="btn-primary w-full justify-center sm:w-auto sm:shrink-0"
               href={GITHUB_REPO_URL}
               rel="noopener noreferrer"
               target="_blank"
             >
               View on GitHub
             </a>
-            <Link className="btn-secondary" href="/dashboard">
+            <Link className="btn-secondary w-full justify-center sm:w-auto sm:shrink-0" href="/dashboard">
               Open dashboard
             </Link>
-            <Link className="btn-secondary" href="/integrations#self-host">
+            <Link
+              className="btn-secondary w-full justify-center sm:w-auto sm:shrink-0"
+              href="/integrations#self-host"
+            >
               Self-host checklist
             </Link>
           </div>
